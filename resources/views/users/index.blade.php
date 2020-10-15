@@ -15,6 +15,8 @@
             <th>Nombre</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Notas</th>
+            <th>Tags</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -33,6 +35,8 @@
                     {{--Usando forma de colecciones--}}
                     {{  $user->roles->pluck('display_name')->implode(' - ') }}
                 </th>
+                <th>{{$user->note->body ?? ''}}</th>
+                <th>{{$user->tags->pluck('name')->implode(' - ')  ?? ''}}</th>
                 <th>
 
                     <a href="{{route('users.edit', $user->id)}}" class="btn btn-info btn-xs">Editar</a>

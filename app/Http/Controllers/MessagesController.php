@@ -22,7 +22,10 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        $mesages = Message::all();
+        // $mesages = Message::all();
+        // Se especifica que realice edger loading para cargar en un solo query varios modelos
+        // recibe en el arreglo, los modelos a realizar el join
+        $mesages = Message::with(['user', 'tags', 'note'])->get();
 
         return view('messages.index')->with(['messages' => $mesages]);
     }

@@ -89,4 +89,24 @@ class User extends Authenticatable
         $this->attributes['password'] = $value;
     }
 
+
+    //Relacion ppolimorfico un usuario una nota
+    public function note(){
+
+        // en tinker
+        // $user->note()->create(['body' => 'nota del usuario 1']);
+
+
+        return $this->morphOne(Note::class, 'notable');
+    }
+
+
+    public function tags(){
+
+        // En tinker
+        // >>> $message->tags()->create(['name' => 'Importante mensaje'])
+        // >>> $message->tags()->save($tag);  // Añadendole una etiqueta existente al mensaje
+        return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
+    }
+
 }

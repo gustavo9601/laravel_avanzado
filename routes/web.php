@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
+// Debugear cuantas consultas ejecuta por llamar el recurso
+/*DB::listen(function ($query) {
+    echo '<pre>' . $query->sql . '</pre>';   // consulta sql
+    echo '<pre>' . $query->time . '</pre>';  // tiempo en retornar el servidor
+});*/
 
 Route::get('/', function () {
     return view('welcome');

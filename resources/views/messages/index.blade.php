@@ -17,6 +17,8 @@
             <th>Nombre</th>
             <th>Email</th>
             <th>Texto</th>
+            <th>Notas</th>
+            <th>Tags</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -28,6 +30,10 @@
                 <th>{{$message->user->name}}</th>
                 <th>{{$message->user->email}}</th>
                 <th>{{$message->text}}</th>
+                {{--Accede a traves de la relacion polimorfica--}}
+                <th>{{$message->note->body ?? ''}}</th>
+
+                <th>{{$message->tags->pluck('name')->implode(' - ')  ?? ''}}</th>
                 <th>
 
                     <a href="{{route('messages.edit', $message->id)}}" class="btn btn-info btn-xs">Editar</a>
