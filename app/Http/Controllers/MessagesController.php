@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageWasReceived;
 use App\Http\Requests\CreateMessageRequest;
 use App\Message;
 use http\Client\Curl\User;
@@ -43,12 +44,13 @@ class MessagesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateMessageRequest $request)
     {
         $message = Message::create($request->all());
+
 
         // Usuario con el que se autentico
         $userAuth = auth()->user();
@@ -57,6 +59,9 @@ class MessagesController extends Controller
         // ->create($message)
         $userAuth->messages()->save($message);
 
+        // Ejecutando el evento
+        event(new MessageWasReceived($message));
+
 
         return redirect()->route('messages.index')->with(['info' => 'Usuario creado correctamente']);
     }
@@ -64,7 +69,7 @@ class MessagesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -77,7 +82,7 @@ class MessagesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -89,8 +94,8 @@ class MessagesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(CreateMessageRequest $request, $id)
@@ -105,7 +110,7 @@ class MessagesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

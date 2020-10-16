@@ -30,7 +30,7 @@ class UsersController extends Controller
     public function index()
     {
         // $users = User::all();
- 
+
         $users = User::with(['messages', 'roles', 'note', 'tags'])->get();
 
 

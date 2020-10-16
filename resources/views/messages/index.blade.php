@@ -27,8 +27,8 @@
             <tr>
                 <th>{{$message->id}}</th>
                 {{--Accede al nombre del usuario atravez de la relacion--}}
-                <th>{{$message->user->name}}</th>
-                <th>{{$message->user->email}}</th>
+                <th>{{$message->user->name ?? ''}}</th>
+                <th>{{$message->user->email ?? ''}}</th>
                 <th>{{$message->text}}</th>
                 {{--Accede a traves de la relacion polimorfica--}}
                 <th>{{$message->note->body ?? ''}}</th>
