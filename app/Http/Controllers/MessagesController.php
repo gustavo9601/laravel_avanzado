@@ -26,7 +26,14 @@ class MessagesController extends Controller
         // $mesages = Message::all();
         // Se especifica que realice edger loading para cargar en un solo query varios modelos
         // recibe en el arreglo, los modelos a realizar el join
-        $mesages = Message::with(['user', 'tags', 'note'])->get();
+
+        // $mesages = Message::with(['user', 'tags', 'note'])->get();
+        // return $mesages = Message::with(['user', 'tags', 'note'])->paginate(10);  // retorna como objeto todos los datos de la paginacion
+        // return $mesages = Message::with(['user', 'tags', 'note'])->simplePaginate(10); // retorna como objeto los datos de pagina siguiente y atras
+        $mesages = Message::with(['user', 'tags', 'note'])
+            //->latest()  // ordena por fecha de creacion
+            ->orderBy('created_at', request()->input('sorted', 'ASC') ) // ordena y capta si recibe por la url get el parametro de ordenamiento
+            ->paginate(10);
 
         return view('messages.index')->with(['messages' => $mesages]);
     }

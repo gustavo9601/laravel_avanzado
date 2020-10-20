@@ -31,6 +31,7 @@
                 <th>{{$message->user->email ?? ''}}</th>
                 <th>{{$message->text}}</th>
                 {{--Accede a traves de la relacion polimorfica--}}
+
                 <th>{{$message->note->body ?? ''}}</th>
 
                 <th>{{$message->tags->pluck('name')->implode(' - ')  ?? ''}}</th>
@@ -54,4 +55,10 @@
         </tbody>
     </table>
 
+    {{--Se le pasa por appends, el valor get que debe permanecer al dar click en cada paginacion--}}
+    {{--Si se requiere persistir un valor en # se define con fragment y el valor por default--}}
+    {!! $messages
+        ->appends(['sorted' => request('sorted')])
+        ->fragment('hash')
+        ->links() !!}
 @endsection
