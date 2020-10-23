@@ -14,6 +14,7 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
+            <th>Nombre + Email</th>
             <th>Role</th>
             <th>Notas</th>
             <th>Tags</th>
@@ -26,6 +27,9 @@
                 <th>{{$user->id}}</th>
                 <th>{{$user->name}}</th>
                 <th>{{$user->email}}</th>
+                {{--Accede a travez del presenter definido en el modelo UserPresent--}}
+                <th>{{$user->present()->nombreMasEmail()}}</th>
+
                 {{--Accede a travez de la relacion roles--}}
                 <th>
                     {{--@foreach($user->roles as $role)

@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Decorators\CacheMessagesDecorator;
 use App\Events\MessageWasReceived;
 use App\Http\Requests\CreateMessageRequest;
 use App\Message;
+use App\Repositories\messagesDecorator;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 
 class MessagesController extends Controller
 {
 
-    public function __construct()
+
+    private $messagesDecorator;
+
+    // Instanciando el repositorio que contiene la logica de la BD
+    public function __construct(CacheMessagesDecorator $messagesDecorator)
     {
         $this->middleware(['auth']);
+
+        $this->messagesDecorator = $messagesDecorator;
     }
 
     /**
@@ -23,6 +31,7 @@ class MessagesController extends Controller
      */
     public function index()
     {
+
         // $mesages = Message::all();
         // Se especifica que realice edger loading para cargar en un solo query varios modelos
         // recibe en el arreglo, los modelos a realizar el join
@@ -30,10 +39,9 @@ class MessagesController extends Controller
         // $mesages = Message::with(['user', 'tags', 'note'])->get();
         // return $mesages = Message::with(['user', 'tags', 'note'])->paginate(10);  // retorna como objeto todos los datos de la paginacion
         // return $mesages = Message::with(['user', 'tags', 'note'])->simplePaginate(10); // retorna como objeto los datos de pagina siguiente y atras
-        $mesages = Message::with(['user', 'tags', 'note'])
-            //->latest()  // ordena por fecha de creacion
-            ->orderBy('created_at', request()->input('sorted', 'ASC') ) // ordena y capta si recibe por la url get el parametro de ordenamiento
-            ->paginate(10);
+
+
+        $mesages = $this->messagesDecorator->getPaginated();
 
         return view('messages.index')->with(['messages' => $mesages]);
     }
@@ -56,19 +64,10 @@ class MessagesController extends Controller
      */
     public function store(CreateMessageRequest $request)
     {
-        $message = Message::create($request->all());
-
-
-        // Usuario con el que se autentico
-        $userAuth = auth()->user();
-
-        // Le añade el mensaje con el id identificado
-        // ->create($message)
-        $userAuth->messages()->save($message);
+        $message = $this->messagesDecorator->store($request);
 
         // Ejecutando el evento
         event(new MessageWasReceived($message));
-
 
         return redirect()->route('messages.index')->with(['info' => 'Usuario creado correctamente']);
     }
@@ -81,7 +80,7 @@ class MessagesController extends Controller
      */
     public function show($id)
     {
-        $message = Message::findOrFail($id);
+        $message = $this->messagesDecorator->findById($id);
 
         return view('messages.show')->with(['message' => $message]);
     }
@@ -94,7 +93,9 @@ class MessagesController extends Controller
      */
     public function edit($id)
     {
-        $message = Message::findOrFail($id);
+
+        $message = $this->messagesDecorator->findById($id);
+
         return view('messages.edit')->with(['btnText' => 'Editar mensaje', 'message' => $message]);
     }
 
@@ -107,9 +108,7 @@ class MessagesController extends Controller
      */
     public function update(CreateMessageRequest $request, $id)
     {
-        $message = Message::findOrFail($id);
-
-        $message->update($request->all());
+        $message =  $this->messagesDecorator->update($request, $id);
 
         return redirect()->route('messages.index')->with(['info' => 'Mensaje actualizado']);
     }
@@ -122,9 +121,7 @@ class MessagesController extends Controller
      */
     public function destroy($id)
     {
-        $message = Message::findOrFail($id);
-
-        $message->delete();
+        $message = $this->messagesDecorator->destroy($id);
 
         return redirect()->back()->with(['info' => 'Mensaje eliminado correctamente']);
     }

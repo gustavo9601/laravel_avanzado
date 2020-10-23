@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Presenters\UserPresenter;
 
 class User extends Authenticatable
 {
@@ -107,6 +108,12 @@ class User extends Authenticatable
         // >>> $message->tags()->create(['name' => 'Importante mensaje'])
         // >>> $message->tags()->save($tag);  // Añadendole una etiqueta existente al mensaje
         return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
+    }
+
+
+    // Al llamar esta funcion del modelo, retornara una instancia del presenter
+    public function present(){
+        return new UserPresenter($this);
     }
 
 }
