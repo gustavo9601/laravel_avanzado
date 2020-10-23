@@ -6,7 +6,7 @@ use App\Events\MessageWasReceived;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendNotificationToTheOwner
+class SendNotificationToTheOwner implements ShouldQueue
 {
 
     /**
@@ -23,7 +23,7 @@ class SendNotificationToTheOwner
         // \Mail::send('vista', [data], function(){});
         $message = $event->message;
         \Mail::send('mails.new-message', ['msg' => $message], function ($m) use ($message) {
-            $m->from(auth()->user()->email, 'Nombre clietnte')
+            $m->from('ing.gustavo.marquez@gmail.com', 'Nombre clietnte')
                 ->to('tavo9601@gmail.com', 'Gus IA')
                 ->subject('Tu mensaje fue recibido');
         });

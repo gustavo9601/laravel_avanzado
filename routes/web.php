@@ -30,3 +30,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UsersController');
 Route::resource('messages', 'MessagesController');
 
+
+
+// Execute job test
+Route::get('job', function(){
+
+    dispatch(new \App\Jobs\SendEmail);
+
+    return "Ejecutado";
+
+});

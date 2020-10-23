@@ -6,7 +6,7 @@ use App\Events\MessageWasReceived;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendAutoResponder
+class SendAutoResponder implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -32,7 +32,7 @@ class SendAutoResponder
         // \Mail::send('vista', [data], function(){});
         $message = $event->message;
         \Mail::send('mails.new-message', ['msg' => $message], function ($m) use ($message) {
-            $m->to(auth()->user()->email, 'Nombre clietnte')->subject('Tu mensaje fue recibido');
+            $m->to('ing.gustavo.marquez@gmail.com', 'Nombre clietnte')->subject('Tu mensaje fue recibido');
         });
 
     }
