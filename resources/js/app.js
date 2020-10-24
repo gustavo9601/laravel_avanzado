@@ -1,3 +1,6 @@
 require('./bootstrap');
 
-console.log("loading 2")
+Echo.channel('messages-channel')
+    .listen('MessageWasReceived', (data) => {
+        console.log("data", data);
+    });
