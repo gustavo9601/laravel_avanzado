@@ -12,6 +12,6 @@
 
 Tu mensaje:
 <hr>
-<p>{{$msg->text}}</p>
+<p>{{$data->text}}</p>
 </body>
 </html>

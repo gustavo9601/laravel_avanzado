@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\MessageWasReceived;
+use App\Mail\TuMensajeFueRecibido;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class SendAutoResponder implements ShouldQueue
 {
@@ -31,9 +33,12 @@ class SendAutoResponder implements ShouldQueue
 
         // \Mail::send('vista', [data], function(){});
         $message = $event->message;
-        \Mail::send('mails.new-message', ['msg' => $message], function ($m) use ($message) {
+
+        Mail::to('ing.gustavo.marquez@gmail.com')->send(new TuMensajeFueRecibido($message));
+
+        /*\Mail::send('mails.new-message', ['msg' => $message], function ($m) use ($message) {
             $m->to('ing.gustavo.marquez@gmail.com', 'Nombre clietnte')->subject('Tu mensaje fue recibido');
-        });
+        });*/
 
     }
 }
