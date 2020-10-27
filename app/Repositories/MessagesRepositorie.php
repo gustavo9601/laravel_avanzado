@@ -17,13 +17,14 @@ class MessagesRepositorie implements MessagesInterface
 
         return Message::with(['user', 'tags', 'note'])
             //->latest()  // ordena por fecha de creacion
-            ->orderBy('created_at', request()->input('sorted', 'ASC')) // ordena y capta si recibe por la url get el parametro de ordenamiento
+            ->orderBy('created_at', request()->input('sorted', 'DESC')) // ordena y capta si recibe por la url get el parametro de ordenamiento
             ->paginate(10);
 
     }
 
     public function store($request)
     {
+
         $message = Message::create($request->all());
 
 

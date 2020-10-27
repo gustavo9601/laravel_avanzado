@@ -40,7 +40,6 @@ class MessagesController extends Controller
         // return $mesages = Message::with(['user', 'tags', 'note'])->paginate(10);  // retorna como objeto todos los datos de la paginacion
         // return $mesages = Message::with(['user', 'tags', 'note'])->simplePaginate(10); // retorna como objeto los datos de pagina siguiente y atras
 
-
         $mesages = $this->messagesDecorator->getPaginated();
 
         return view('messages.index')->with(['messages' => $mesages]);

@@ -3,7 +3,6 @@
 namespace App\Decorators;
 
 use App\Interfaces\MessagesInterface;
-use App\Message;
 use App\Repositories\MessagesRepositorie;
 
 class CacheMessagesDecorator implements MessagesInterface
