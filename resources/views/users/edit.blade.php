@@ -7,9 +7,18 @@
         <h1>Editar usuario</h1>
 
 
-        <form action="{{route('users.update', $user->id)}}" method="POST">
+        <form action="{{route('users.update', $user->id)}}" enctype="multipart/form-data" method="POST">
             @method('PUT')
             @csrf
+
+            <div class="form-broup">
+                <label for="avatar">Avatar</label>
+                <hr>
+                <img width="100px" src="{{route('user-image', ['id'=> $user->id])}}" alt="">
+                <input class="form-control" type="file" name="avatar" id="">
+                {!! $errors->first('avatar', '<span class="error">:message</span>') !!}
+            </div>
+
 
             <div class="form-group">
                 <label for="name"> Nombre </label>

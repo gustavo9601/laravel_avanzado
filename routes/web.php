@@ -28,6 +28,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UsersController');
+Route::get('user-image/{id}', 'UsersController@getImageUser')->name('user-image');
+
 Route::resource('messages', 'MessagesController');
 
 

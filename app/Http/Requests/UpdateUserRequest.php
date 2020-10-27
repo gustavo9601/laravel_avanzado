@@ -27,6 +27,7 @@ class UpdateUserRequest extends FormRequest
         // capturando el id de usuario enviado por parametro
         return [
             'name' => 'required',
+            'avatar' => 'image',
             'email' => 'required|unique:users,email,' . $this->route('user')
         ];
     }

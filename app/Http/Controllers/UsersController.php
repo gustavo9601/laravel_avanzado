@@ -107,6 +107,10 @@ class UsersController extends Controller
         // se pasa por parametro el nombre de la funciona a ejecutar en el policy
         $this->authorize('edit', $user);
 
+        // Si se envia la imagen
+        if ($request->hasFile('avatar')){
+            $user->avatar =  $request->file('avatar')->store('public');
+        }
 
         $user->update($request->all());
 
@@ -135,4 +139,10 @@ class UsersController extends Controller
 
         return redirect()->back()->with(['info' => 'Usuario ' . $user->name . ' eliminado satisfactoriamente']);
     }
+
+    public function getImageUser($id){
+        $user = User::findOrFail($id);
+        return \Storage::get($user->avatar);
+    }
+
 }
