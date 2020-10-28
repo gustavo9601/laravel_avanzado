@@ -28,11 +28,11 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UsersController');
-Route::get('user-image/{id}', 'UsersController@getImageUser')->name('user-image');
+Route::get('user-image/{id}', 'UsersController@getImageUser')->name('user.image');
 
 Route::resource('messages', 'MessagesController');
 
-
+Route::resource('chats', 'ChatController');
 
 // Execute job test
 Route::get('job', function(){
