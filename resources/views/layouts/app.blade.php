@@ -46,7 +46,7 @@
                         {{--
                             Accediendo a la funcion notifications atraves del trait Notifiable
                             --}}
-                        @if ($count_notification = auth()->user()->notifications->count())
+                        @if ($count_notification = auth()->user()->unreadNotifications->count())
                             <span class="badge badge-info">
                                     {{$count_notification}}
                             </span>
@@ -54,10 +54,14 @@
 
                     </a>
 
-                    <a class="navbar-brand" href="{{route('chats.create')}}">
-                        Crear Chat
+                    <a class="navbar-brand btn btn-xs btn-primary" href="{{route('chats.create')}}">
+                        Crear Chat Notification
                     </a>
 
+
+                    <a class="navbar-brand btn btn-xs btn-warning" href="{{route('great.all.users')}}">
+                        Saludar All Users
+                    </a>
             @endif
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"

@@ -7,9 +7,17 @@ use App\Notifications\ChatSend;
 use App\User;
 use http\Message;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 
 class ChatController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,10 +25,12 @@ class ChatController extends Controller
      */
     public function index()
     {
-        // Que traiga todos los usuarios menos el autenticado
-        $users = User::where('id', '!=', auth()->user()->id)->get();
+        // Que traiga todas las notificaciones, con la ayuda del trait Notifiable
+        $readNotifications = auth()->user()->readNotifications;
+        $unreadNotifications = auth()->user()->unreadNotifications;
 
-        return view('chats.index')->with(['users' => $users]);
+
+        return view('chats.index')->with(['readNotifications' => $readNotifications, 'unreadNotifications' => $unreadNotifications]);
     }
 
     /**
@@ -47,7 +57,7 @@ class ChatController extends Controller
 
         //'recipient_id' => 'required|exists:users,id'
         // Verifica que el valor en el campo exista en la tabla users en el campo id
-        $this->validate($request,[
+        $this->validate($request, [
             'body' => 'required',
             'recipient_id' => 'required|exists:users,id'
         ]);
@@ -108,6 +118,25 @@ class ChatController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        //DatabaseNotification modelo de elquent creado para el manejo de las notificaciones
+
+        // Busca la notificacion y con la funcion propia del modelo la elimina
+        DatabaseNotification::find($id)->delete();
+
+        return back()->with(['flash' => 'La notificacion con id: ' . $id . ' se elimino correctamente']);
     }
+
+    public function read(Request $request, $id)
+    {
+
+        //DatabaseNotification modelo de elquent creado para el manejo de las notificaciones
+
+        // Busca la notificacion y con la funcion propia del modelo la marka como leida
+        DatabaseNotification::find($id)->markAsRead();
+
+        return back()->with(['flash' => 'La notificacion con id: ' . $id . ' se marco como leida']);
+
+    }
+
 }

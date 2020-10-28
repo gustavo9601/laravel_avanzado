@@ -33,9 +33,27 @@ Route::get('user-image/{id}', 'UsersController@getImageUser')->name('user.image'
 Route::resource('messages', 'MessagesController');
 
 Route::resource('chats', 'ChatController');
+Route::post('chats/read/{id}', 'ChatController@read')->name('chats.read');
+Route::delete('chats/{id}', 'ChatController@destory')->name('chats.destroy');
+
+use Carbon\Carbon;
+// Prueba de envio de notificaciones masiva
+Route::get('great-all-users', function () {
+
+    $users = \App\User::all();
+    $message = 'Un cordial saludo a todos hoy ' . Carbon::today();
+    // Usando el fasar Notification le pasamos al send(instancia de usuarios a enviar notificacion, clase de la notificacion)
+    \Notification::send($users, new \App\Notifications\GreatAllUsers($message));
+
+    return redirect()->to('/')->with(['flash' => 'mesnaje enviado a todos los usuarios']);
+    // Por lo general se puede delegar a un listener como queue
+
+})->name('great.all.users')
+    ->middleware(['auth']);
+
 
 // Execute job test
-Route::get('job', function(){
+Route::get('job', function () {
 
     dispatch(new \App\Jobs\SendEmail);
 

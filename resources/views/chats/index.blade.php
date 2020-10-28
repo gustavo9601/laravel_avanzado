@@ -18,30 +18,44 @@
                 @endif
 
 
-                <h1>Nuevo chat</h1>
+                <h1>Notifications</h1>
 
 
-                <form action="{{route('chats.store')}}" method="POST">
-                    @csrf
+               <div class="row mt-5">
+                   <div class="col-md-6">
+                       <h2>Leidas</h2>
+                       <hr>
+                       <ul class="list-group">
+                           @foreach($readNotifications as $readNotification)
+                           <li class="list-group-item">{{$readNotification->data['body']}}</li>
 
-                    <div class="form-group">
-                        <select name="recipient_id" id="" class="form-control">
-                            <option selected>Selecciona el usuario</option>
-                            @foreach($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}}</option>
+                               <form action="{{route('chats.destroy', [$readNotification->id])}}" method="POST" class="pull-right">
+                                   @csrf
+                                   @method('DELETE')
+                                   <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                               </form>
                             @endforeach
-                        </select>
-                    </div>
+                       </ul>
 
-                    <div class="form-group">
-                        <label for="body"> Mensaje </label>
-                        <textarea  class="form-control" name="body" id="body"></textarea>
-                        {{--Laravel reemplazar el primer error encontrado para el campo name, en :message--}}
-                        {!! $errors->first('text', '<span class="error">:message</span>') !!}
-                    </div>
-                    <button type="submit" class="btn btn-block btn-xs btn-primary">Enviar chat</button>
+                   </div>
+                   <div class="col-md-6">
+                       <h2>No Leidas</h2>
+                       <hr>
+                       <ul class="list-group">
+                           @foreach($unreadNotifications as $unreadNotification)
+                               {{--Accede al cuerpo de la notificacion a travez de data que es un arreglo--}}
+                               <li class="list-group-item">{{$unreadNotification->data['body']}}
 
-                </form>
+                                   <form action="{{route('chats.read', [$unreadNotification->id])}}" method="POST" class="pull-right">
+                                       @csrf
+                                       <button type="submit" class="btn btn-success btn-xs">Mark read</button>
+                                   </form>
+
+                               </li>
+                           @endforeach
+                       </ul>
+                   </div>
+               </div>
 
             </div>
 
