@@ -36,6 +36,7 @@ Route::resource('chats', 'ChatController');
 Route::post('chats/read/{id}', 'ChatController@read')->name('chats.read');
 Route::delete('chats/{id}', 'ChatController@destory')->name('chats.destroy');
 
+
 use Carbon\Carbon;
 // Prueba de envio de notificaciones masiva
 Route::get('great-all-users', function () {
@@ -60,3 +61,9 @@ Route::get('job', function () {
     return "Ejecutado";
 
 });
+
+
+// Reports
+
+Route::get('reports/export-pdf', 'ExportDataFilesController@exportToPdf')->name('reports.export-pdf');
+Route::get('reports', 'ExportDataFilesController@index')->name('reports');

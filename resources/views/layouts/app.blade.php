@@ -62,6 +62,10 @@
                     <a class="navbar-brand btn btn-xs btn-warning" href="{{route('great.all.users')}}">
                         Saludar All Users
                     </a>
+
+                    <a class="navbar-brand btn btn-xs btn-success" href="{{route('reports')}}">
+                        Reports
+                    </a>
             @endif
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
